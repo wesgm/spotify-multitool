@@ -2,12 +2,12 @@ import spotipy
 import requests
 import json
 from spotipy.oauth2 import SpotifyOAuth
+import credentials as cd
 
-SPOTIPY_CLIENT_ID="***REMOVED***"
-SPOTIPY_CLIENT_SECRET="***REMOVED***"
-SPOTIPY_REDIRECT_URI="http://127.0.0.1:9090"
+SPOTIPY_REDIRECT_URI="localhost:5000"
 SCOPE = "user-top-read"
-sp = spotipy.Spotify(auth_manager = SpotifyOAuth(client_id = SPOTIPY_CLIENT_ID, client_secret= SPOTIPY_CLIENT_SECRET, redirect_uri =SPOTIPY_REDIRECT_URI, scope = SCOPE))
+
+sp = spotipy.Spotify(auth_manager = SpotifyOAuth(client_id = cd.client_id(), client_secret= cd.client_secret(), redirect_uri =SPOTIPY_REDIRECT_URI, scope = SCOPE))
 def get_top_artists_from_api():
 	return sp.current_user_top_artists(time_range = "short_term", limit = 50)
 def get_ids(artists_dict):
@@ -26,7 +26,7 @@ class Artist:
 def init_artists(artist_ids):
 		artists = [] 
 		for i, id in enumerate(artist_ids):
-			artists.append(Artist(id, i))
+			artists.append(Artist(id, i+1))
 		return artists
 def get_top_artists():
 	#get ids of top 50 tracks in last month

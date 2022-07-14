@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	{% if title %}
+		<title>Spotify Multitool - {{ title }}</title>
+	{% else %}
+		<title>Spotify Multitool</title>
+	{% endif %}
+</head>
+<body>
+	{% block content %}{% endblock %}
+</body>
+</html>

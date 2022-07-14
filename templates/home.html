@@ -1,0 +1,12 @@
+{% extends "layout.html" %} 
+{% block content %}
+<h1>Welcome!</h1>
+<h1> My top tracks: </h1>
+	{% for track in top_tracks %}
+		<p> {{ track.rank }}: {{ track.name }} by {{ track.artist }}</p>
+	{% endfor %}
+<h1> My top artists: </h1>
+	{% for artist in top_artists %}
+		<p> {{ artist.rank }}: {{ artist.name }}</p>
+	{% endfor %}
+{% endblock %}
