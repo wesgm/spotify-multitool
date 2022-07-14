@@ -2,17 +2,15 @@ import spotipy
 import requests
 import json
 from spotipy.oauth2 import SpotifyOAuth
-import pandas as pd
+import credentials as cd
 
-SPOTIPY_CLIENT_ID="***REMOVED***"
-SPOTIPY_CLIENT_SECRET="***REMOVED***"
-SPOTIPY_REDIRECT_URI="http://127.0.0.1:9090"
+SPOTIPY_REDIRECT_URI="localhost:5000"
 SCOPE = "user-top-read"
 
-sp = spotipy.Spotify(auth_manager = SpotifyOAuth(client_id = SPOTIPY_CLIENT_ID, client_secret= SPOTIPY_CLIENT_SECRET, redirect_uri =SPOTIPY_REDIRECT_URI, scope = SCOPE))
+sp = spotipy.Spotify(auth_manager = SpotifyOAuth(client_id = cd.client_id(), client_secret= cd.client_secret(), redirect_uri =SPOTIPY_REDIRECT_URI, scope = SCOPE))
 def get_ids(results_dict):
 		ids=[]
-		for item in results["items"]:
+		for item in results_dict["items"]:
 			ids.append(item["id"])
 		return ids
 #class for tracks to store data about them
@@ -34,13 +32,14 @@ class Track:
 def initTracks(track_ids):
 		tracks = [] 
 		for i, id in enumerate(track_ids):
-			tracks.append(Track(id, i))
+			tracks.append(Track(id, i+1))
 		return tracks
-
-#get ids of top 50 tracks in last month
-results = sp.current_user_top_tracks(time_range = "short_term", limit = 50)
-ids = get_ids(results_dict = results)
-print(ids)
-tracks = initTracks(ids)
-for track in tracks:
-	print(track.name + " " + track.artist + " " + str(track.rank))
+def get_tracks_from_api():
+	return sp.current_user_top_tracks(time_range = "short_term", limit = 50)
+def get_top_tracks():
+	#get ids of top 50 tracks in last month
+	results = get_tracks_from_api()
+	ids = get_ids(results_dict = results)
+	#print(ids)
+	tracks = initTracks(ids)
+	return tracks
